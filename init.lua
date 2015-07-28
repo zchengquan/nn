@@ -71,6 +71,7 @@ include('PReLU.lua')
 
 include('LookupTable.lua')
 include('SpatialConvolution.lua')
+include('SpatialDeconvolution.lua')
 include('SpatialFullConvolution.lua')
 include('SpatialFullConvolutionMap.lua')
 include('SpatialConvolutionMM.lua')
