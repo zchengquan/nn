@@ -1,5 +1,5 @@
 local Crop, Parent = torch.class('nn.Crop', 'nn.Module')
----- forward: two paras, work with nnGraph
+---- forward: two paras, work with nnGraph. need redefine forward
 
 function Crop:__init()
 	Parent.__init(self)
@@ -9,8 +9,9 @@ end
 function Crop:updateOutput(input_data,input)
 -- input_data: bottom data
 -- input: current laye's input, format:nBatch x nChanel x H x W or nChannel x H x W, just one scale for per training time
-	self.output:resizeAs(input_data)  --:copy(input_data)
+	--self.output:resizeAs(input_data)  --:copy(input_data)
 	if input_data:dim() == 3 then -- one image
+		self.output:resize(input:size(1),input_data:size(2),input_data:size(3))  --:copy(input_data)
 		self.mask = torch.Tensor(1,4)  -- pad_l, pad_r,pad_t,pad_b
 		self.mask[{1,1}]=math.floor((input:size(2) - input_data:size(2))/2)
 		self.mask[{1,2}]=(input:size(2)-input_data:size(2)) - self.mask[{1,1}]
@@ -20,6 +21,7 @@ function Crop:updateOutput(input_data,input)
 		self.output:copy(input[{{},{self.mask[{1,1}]+1,self.mask[{1,1}]+input_data:size(2)},{self.mask[{1,3}]+1,self.mask[{1,3}]+input_data:size(3)}}])
 
 	elseif input_data:dim() == 4 then  -- batch
+		self.output:resize(input:size(1),input:size(2),input_data:size(3),input_data:size(4))  --:copy(input_data)
 		--self.mask = torch.Tensor(input_data:size(1),4) 
 		self.mask = torch.Tensor(1,4)  -- pad_l, pad_r,pad_t,pad_b
 		self.mask[{1,1}]=math.floor((input:size(3) - input_data:size(3))/2)
