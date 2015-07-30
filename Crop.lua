@@ -8,7 +8,7 @@ end
 
 function Crop:updateOutput(input_data,input)
 -- input_data: bottom data
--- input: current laye's input, format:nBatch x nChanel x H x W or nChannel x H x W, just one scale for per training time
+-- input: the current layer's input, format:nBatch x nChanel x H x W  or  nChannel x H x W
 	--self.output:resizeAs(input_data)  --:copy(input_data)
 	if input_data:dim() == 3 then -- one image
 		self.output:resize(input:size(1),input_data:size(2),input_data:size(3))  --:copy(input_data)
@@ -33,7 +33,7 @@ function Crop:updateOutput(input_data,input)
         else
 		error('<Crop updateOutput> illegal input, must be 3 D or 4 D')
 	end
-	-- update crop input
+	-- updateOutput
 	return self.output
 end
 
@@ -55,6 +55,6 @@ function Crop:updateGradInput(input,gradOutput)
 end
 
 function Crop:forward(input_data, input)
--- rewrite forward
+-- rewrite forward, need be fixed given the input data format
    return self:updateOutput(input_data,input)
 end
