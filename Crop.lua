@@ -28,7 +28,7 @@ function Crop:updateOutput(input_data,input)
 		self.mask[{1,4}]=(input:size(4) - input_data:size(4)) - self.mask[{1,3}]
 		-- update: crop input
 		self.output:copy(input[{{},{},{self.mask[{1,1}]+1,self.mask[{1,1}]+input_data:size(3)},{self.mask[{1,3}]+1,self.mask[{1,3}]+input_data:size(4)}}])
-  else
+        else
 		error('<Crop updateOutput> illegal input, must be 3 D or 4 D')
 	end
 	-- update crop input
