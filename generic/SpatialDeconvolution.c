@@ -54,7 +54,7 @@ static int nn_(SpatialDeconvolution_updateOutput)(lua_State *L)
       }
       /*THTensor_(free)(outn);*/
       /* do convolutions */
-      THTensor_(conv2Dmv)(output, 0.0, 1.0, input, weight, dH, dW, "F","C");//convolution
+      THTensor_(conv2Dmv)(output, 1.0, 1.0, input, weight, dH, dW, "F","C");//convolution
 
     }
     else
@@ -82,7 +82,7 @@ static int nn_(SpatialDeconvolution_updateOutput)(lua_State *L)
         }
       }
       /* do convolutions */
-      THTensor_(conv2Dmm)(output, 0.0, 1.0, input, weight, dH, dW, "F","C");
+      THTensor_(conv2Dmm)(output, 1.0, 1.0, input, weight, dH, dW, "F","C");
     }
   }
   return 1;
@@ -109,11 +109,11 @@ static int nn_(SpatialDeconvolution_updateGradInput)(lua_State *L)
 
   if (input->nDimension == 3)
   {
-    THTensor_(conv2Dmv)(gradInput, 1.0, 1.0, gradOutput, tweight, dH, dW, "V","X");//correlation
+    THTensor_(conv2Dmv)(gradInput, 0.0, 1.0, gradOutput, tweight, dH, dW, "V","X");//correlation
   }
   else
   {
-    THTensor_(conv2Dmm)(gradInput, 1.0, 1.0, gradOutput, tweight, dH, dW, "V","X");
+    THTensor_(conv2Dmm)(gradInput, 0.0, 1.0, gradOutput, tweight, dH, dW, "V","X");
   }
   THTensor_(free)(tweight);
   return 1;
