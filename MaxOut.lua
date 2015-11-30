@@ -56,9 +56,9 @@ end
 function MaxOut:updateGradInput(input,gradOutput)
 	self:_lazyInit()
     local gradOutputView
-    if self.input_ == nil or self.input_:nElement()~=input:nElement() then
-  		self.input_ = torch.Tensor(input:size(1),self.groupSize,input:size(3),input:size(4),self.nGroup)--:typeAs(input)
-  	end
+    if self.input_ == nil or self.input_:nElement()~=input:nElement() or self.input_:type()~=input:type() then
+  	self.input_ = torch.Tensor(input:size(1),self.groupSize,input:size(3),input:size(4),self.nGroup):typeAs(input)
+    end
     if self.input_:dim() > 1 then 
     	gradOutputView = nn.utils.addSingletonDimension(gradOutput, self.dimension)
    	else
